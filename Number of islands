@@ -1,0 +1,27 @@
+//https://www.codingninjas.com/studio/problems/find-number-of-islands_630512?leftPanelTab=1
+void solve(int n,int m,vector<vector<int>>&vis,int row,int col,int **arr){
+   vis[row][col]=1;
+   for(int i=-1;i<=1;i++){
+      for(int j=-1;j<=1;j++){
+         int nrow=row+i;
+         int ncol=col+j;
+         if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && arr[nrow][ncol]==1 && !vis[nrow][ncol]){
+            solve(n,m,vis,nrow,ncol,arr);
+         }
+      }
+   }
+}
+int getTotalIslands(int** arr, int n, int m)
+{
+   vector<vector<int>>vis(n,vector<int>(m,0));
+   int cnt=0;
+   for(int i=0;i<n;i++){
+      for(int j=0;j<m;j++){
+         if(!vis[i][j] && arr[i][j]==1){
+            solve(n,m,vis,i,j,arr);
+            cnt++;
+         }
+      }
+   }
+   return cnt;
+}
