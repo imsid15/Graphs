@@ -1,0 +1,30 @@
+//https://practice.geeksforgeeks.org/problems/minimum-multiplications-to-reach-end/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=minimum-multiplications-to-reach-end
+int minimumMultiplications(vector<int>& arr, int start, int end) {
+        if(start%100000==end){
+            return 0;
+        }
+        queue<pair<long long int,long long int>>q;
+        vector<long long int>dis(100000,1e9);
+        dis[start]=0;
+        q.push({0,start%100000});
+        int ans=-1;
+        while(!q.empty()){
+            long long int steps=q.front().first;
+            long long int node=q.front().second;
+            q.pop();
+            for(int i=0;i<arr.size();i++){
+                long long int effort=(node*arr[i])%100000;
+                if(steps+1<dis[effort]){
+                    dis[effort]=steps+1;
+                    if(effort==end){
+                        ans=steps+1;
+                        break;
+                    }
+                    q.push({steps+1,effort});
+                }
+            }
+            if(ans!=-1){
+                break;
+            }
+        }
+        return ans;
