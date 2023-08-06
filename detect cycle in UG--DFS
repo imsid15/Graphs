@@ -1,0 +1,28 @@
+ bool check(int V, vector<int> adj[],vector<int>&vis,int src,int parent){
+    vis[src]=1;
+    for(int i=0;i<adj[src].size();i++){
+        if(!vis[adj[src][i]]){
+           if(check(V,adj,vis,adj[src][i],src)){
+               return true;
+           }
+        }
+        else{
+            if(adj[src][i]!=parent){
+                return true;
+            }
+        }
+    }
+    return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        
+        vector<int>vis(V,0);
+       for(int i=0;i<V;i++){
+           if(!vis[i]){
+               if(check(V,adj,vis,i,-1)){
+                   return true;
+               }
+           }
+       }
+       return false;
+    }
