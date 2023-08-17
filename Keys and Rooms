@@ -1,0 +1,26 @@
+//https://leetcode.com/problems/keys-and-rooms/description/?envType=study-plan-v2&envId=graph-theory
+void dfs(vector<vector<int>>& rooms,vector<int>&vis,int node,vector<int>adj[]){
+        vis[node]=1;
+        for(int i=0;i<adj[node].size();i++){
+            if(!vis[adj[node][i]]){
+                dfs(rooms,vis,adj[node][i],adj);
+            }
+        }
+    }
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        int n=rooms.size();
+        vector<int>adj[n];
+        vector<int>vis(n,0);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<rooms[i].size();j++){
+                adj[i].push_back(rooms[i][j]);
+            }
+        }
+         dfs(rooms,vis,0,adj);
+        for(int i=0;i<n;i++){
+            if(vis[i]==0){
+                return false;
+            }
+        }
+        return true;
+    }
