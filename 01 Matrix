@@ -1,0 +1,44 @@
+//https://leetcode.com/problems/01-matrix/description/
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        vector<vector<int>>ans(n,vector<int>(m,-1));
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        queue<pair<int,pair<int,int>>>q;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==0){
+                    q.push({0,{i,j}});
+                    vis[i][j]=1;
+                }
+            }
+        }
+        while(!q.empty()){
+            auto it=q.front();
+            int dis=it.first;
+            int row=it.second.first;
+            int col=it.second.second;
+            q.pop();
+            ans[row][col]=dis;
+            if(row+1<n && !vis[row+1][col]){
+                        vis[row+1][col]=1;
+                q.push({dis+1,{row+1,col}});
+            }
+            if(row-1>=0 && !vis[row-1][col]){
+                        vis[row-1][col]=1;
+                q.push({dis+1,{row-1,col}});
+            }
+            if(col+1<m && !vis[row][col+1]){
+                        vis[row][col+1]=1;
+                q.push({dis+1,{row,col+1}});
+            }
+            if(col-1>=0 && !vis[row][col-1]){
+                        vis[row][col-1]=1;
+                q.push({dis+1,{row,col-1}});
+            }
+        }
+        return ans;
+    }
+};
