@@ -1,0 +1,52 @@
+//https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/
+
+class Solution {
+int mod=1e9+7;
+public:
+    void solve(int n, vector<vector<int>>& edges,long long int src,
+    vector<pair<long long int,long long int>>adj[],vector<long long int>&k){
+        priority_queue<pair<long long int,long long int>,vector<pair<long long int,long long int>>,greater<pair<long long int,long long int>>>pq;
+
+        pq.push({0,src});
+        while(!pq.empty()){
+            int d=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+            for(int i=0;i<adj[node].size();i++){
+                int v=adj[node][i].first;
+                int w=adj[node][i].second;
+                if(w+d<k[v]){
+                    k[v]=w+d;
+                    pq.push({k[v],v});
+                }
+            }
+        }
+    }
+    int dfs(vector<pair<long long int,long long int>>adj[],int &n,int node,vector<long long int>&dis,vector<long long int>&dp){
+       if(node==n)return 1;
+       if(dp[node]!=-1)return dp[node]%mod;
+       int ans=0;
+       for(int i=0;i<adj[node].size();i++){
+           int v=adj[node][i].first;
+           if(dis[node]>dis[v]){
+               ans=(ans%mod +dfs(adj,n,v,dis,dp)%mod)%mod;
+               ans%=mod;
+           }
+       }
+           return dp[node]=ans%mod;
+
+    }
+    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
+        vector<pair<long long int,long long int>>adj[n+1];
+            vector<long long int>dp(n+1,-1);
+        for(int i=0;i<edges.size();i++){
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+        }
+        vector<long long int>dis(n+1,INT_MAX);
+        dis[n]=0;
+            solve(n,edges,n,adj,dis);
+        return dfs(adj,n,1,dis,dp)%mod;
+
+    }
+};
