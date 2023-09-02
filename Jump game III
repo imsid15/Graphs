@@ -1,0 +1,25 @@
+//https://leetcode.com/problems/jump-game-iii/description/?envType=study-plan-v2&envId=graph-theory
+class Solution {
+public:
+    bool dfs(vector<int>& arr,set<int>&s,int start,vector<int>&vis){
+        vis[start]=1;
+        if(s.find(start)!=s.end())return true;
+        int ans=false;
+        if(start+arr[start]<arr.size() && !vis[start+arr[start]]){
+            ans|=dfs(arr,s,start+arr[start],vis);
+        }
+        if(start-arr[start]>=0 && !vis[start-arr[start]]){
+            ans|=dfs(arr,s,start-arr[start],vis);
+        }
+        return ans;
+    }
+    bool canReach(vector<int>& arr, int start) {
+        set<int>s;
+        for(int i=0;i<arr.size();i++){
+            if(arr[i]==0) s.insert(i);
+        }
+        int n=arr.size();
+        vector<int>vis(n,0);
+        return dfs(arr,s,start,vis);
+    }
+};
