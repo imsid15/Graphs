@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool solve(string a,string b,unordered_map<char,int>&m){
+        int s=min(a.size(),b.size());
+        for(int i=0;i<s;i++){
+            if(m[a[i]]>m[b[i]])return false;
+            else if(m[a[i]]<m[b[i]])return true;
+        }
+        if(a.size()>b.size())return false;
+        return true;
+    }
+    bool isAlienSorted(vector<string>& words, string order) {
+        unordered_map<char,int>m;
+        for(int i=0;i<order.size();i++){
+            m[order[i]]=i;
+        }
+        int n=words.size();
+        for(int i=0;i<n-1;i++){
+            if(!solve(words[i],words[i+1],m))return false;
+        }
+        return true;
+    }
+};
