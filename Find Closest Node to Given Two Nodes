@@ -1,0 +1,32 @@
+//https://leetcode.com/problems/find-closest-node-to-given-two-nodes/description/
+class Solution {
+public:
+    void solve(vector<int>& edges,int node,vector<int>&d,int parent){
+        d[node]=1+d[parent];
+        if(edges[node]!=-1 && d[edges[node]]==-1){
+            solve(edges,edges[node],d,node);
+        }
+    }
+    int closestMeetingNode(vector<int>& edges, int node1, int node2) {
+        int n=edges.size();
+        vector<int>d1(n,-1);
+        vector<int>d2(n,-1);
+        d1[node1]=0,d2[node2]=0;
+        if(edges[node1]!=-1){
+        solve(edges,edges[node1],d1,node1);
+        }
+        if(edges[node2]!=-1){
+        solve(edges,edges[node2],d2,node2);
+        }
+        int index=-1;
+        int ans=1e8;
+        for(int i=0;i<n;i++){
+            if(d1[i]==-1 || d2[i]==-1)continue;
+            if(ans>max(d1[i],d2[i])){
+                ans=max(d1[i],d2[i]);
+                index=i;
+            }
+        }
+        return index;
+    }
+};
