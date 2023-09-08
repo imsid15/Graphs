@@ -1,0 +1,35 @@
+//https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/?envType=study-plan-v2&envId=graph-theory
+class Solution {
+public:
+    int solve(int n,vector<vector<int>>& connections,set<pair<int,int>>&s,vector<int>ans[]){
+        int cnt=0;
+        vector<int>vis(n,0);
+        queue<int>q;
+        q.push(0);
+        while(!q.empty()){
+            int root=q.front();
+            q.pop();
+            vis[root]=1;
+            for(int i=0;i<ans[root].size();i++){
+                int u=ans[root][i];
+                if(!vis[u]){
+                   q.push(u);
+                   if(s.count({root,u})){
+                    cnt++;
+                   }
+                }
+            }
+        }
+        return cnt;
+    }
+    int minReorder(int n, vector<vector<int>>& connections) {
+        set<pair<int,int>>s;
+        vector<int>ans[n];
+        for(int i=0;i<connections.size();i++){
+                ans[connections[i][0]].push_back(connections[i][1]);
+                ans[connections[i][1]].push_back(connections[i][0]);
+                s.insert({connections[i][0],connections[i][1]});
+        }
+        return solve(n,connections,s,ans);
+    }
+};
