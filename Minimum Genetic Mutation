@@ -1,0 +1,34 @@
+//https://leetcode.com/problems/minimum-genetic-mutation/description/?envType=study-plan-v2&envId=graph-theory
+class Solution {
+public:
+    int solve(string startgene, string endgene, set<string>&s){
+        queue<pair<int,string>>q;
+        q.push({0,startgene});
+        while(!q.empty()){
+            int steps=q.front().first;
+            string node=q.front().second;
+            q.pop();
+            if(node==endgene)return steps;
+            for(int i=0;i<node.size();i++){
+                char ch=node[i];
+                for(int j='A';j<='Z';j++){
+                    node[i]=j;
+                    if(s.find(node)!=s.end()){
+                        q.push({steps+1,node});
+                        s.erase(node);
+                    }
+                }
+                node[i]=ch;
+            }
+        }
+        return -1;
+    }
+    int minMutation(string startgene, string endgene, vector<string>& bank) {
+        set<string>s;
+        for(int i=0;i<bank.size();i++){
+            s.insert(bank[i]);
+        }
+        return solve(startgene,endgene,s);
+    }
+    
+};
