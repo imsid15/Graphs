@@ -1,0 +1,44 @@
+https://leetcode.com/problems/shortest-path-with-alternating-colors/description/?envType=study-plan-v2&envId=graph-theory
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& rededges, vector<vector<int>>& blueedges) {
+        vector<int>red[n];
+        vector<int>blue[n];
+        for(int i=0;i<rededges.size();i++){
+            red[rededges[i][0]].push_back(rededges[i][1]);
+        }
+        for(int i=0;i<blueedges.size();i++){
+            blue[blueedges[i][0]].push_back(blueedges[i][1]);
+        }
+        queue<pair<pair<int,int>,string>>q;
+        q.push({{0,0},"NONE"});
+        set<pair<int,string>>vis;
+        vis.insert({0,"NONE"});
+        vector<int>ans(n,-1);
+        while(!q.empty()){
+            auto x=q.front();
+            int node=x.first.first;
+            int dis=x.first.second;
+            string col=x.second;
+            q.pop();
+            if(ans[node]==-1)ans[node]=dis;
+            if(col!="RED"){
+                for(int i=0;i<red[node].size();i++){
+                    if(vis.find({red[node][i],"RED"})==vis.end()){
+                        vis.insert({red[node][i],"RED"});
+                        q.push({{red[node][i],dis+1},"RED"});
+                    }
+                }
+            }
+            if(col!="BLUE"){
+                for(int i=0;i<blue[node].size();i++){
+                    if(vis.find({blue[node][i],"BLUE"})==vis.end()){
+                        vis.insert({blue[node][i],"BLUE"});
+                        q.push({{blue[node][i],dis+1},"BLUE"});
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
