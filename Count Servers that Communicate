@@ -1,0 +1,39 @@
+//https://leetcode.com/problems/count-servers-that-communicate/description/
+class Solution {
+public:
+    int countServers(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<int>row(n,0);
+        vector<int>col(m,0);
+        vector<pair<int,int>>v;
+        for(int i=0;i<n;i++){
+            int ans=0;
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    ans++;
+                    v.push_back({i,j});
+                }
+            }
+            row[i]=ans;
+        }
+        for(int i=0;i<m;i++){
+            int k=0;
+            for(int j=0;j<n;j++){
+                if(grid[j][i]==1){
+                    k++;
+                }
+            }
+            col[i]=k;
+        }
+        int cnt=0;
+        for(int i=0;i<v.size();i++){
+           int r=v[i].first;
+           int c=v[i].second;
+           if(row[r]>1 || col[c]>1){
+               cnt++;
+           }
+        }
+        return cnt;
+    }
+};
